@@ -45,7 +45,7 @@ Route::group(['middleware'=>'login'],function(){
 	//公告批量删除
 	Route::get('/del','Admin\GgaoController@del');
 	//评论管理
-
+/////////////////接下来继续开发模块
 });
 
 
