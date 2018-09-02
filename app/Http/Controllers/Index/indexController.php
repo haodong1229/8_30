@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Index;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
+use DB;
+use App\Http\Model\Index;
 class indexController extends Controller
 {
     /**
@@ -12,9 +14,33 @@ class indexController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function getcates($pid){
+
+        $sort = DB::table('shop_type')->where('pid','=',$pid)->get();
+        //遍历
+          // dd($sort);
+        $data=[];
+        foreach($sort as $k=>$value){
+            // var_dump($value);die;
+            $value->dev=$this->getcates($value->tid);
+            $data[]=$value;
+
+        }
+        return $data;
+        
+    }
     public function index()
     {
-        //
+        // echo '前台首页';
+        //查询轮播图
+        $lun = DB::table('shop_lunbotu')->get();
+        //广告图片
+        $g = DB::table('shop_guanggao')->first();
+        //分类遍历出来
+        $s = $this->getcates(0);
+        // var_dump($s);
+        // die;
+        return view('home.index.index',['lun'=>$lun,'g'=>$g,'s'=>$s]);
     }
 
     /**
